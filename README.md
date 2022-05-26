@@ -71,7 +71,6 @@ struct data_type
   - Visual Studio 2022 Community
 ***
 ### 实现逻辑:
-### Implementation logic:
 > ##### 注意:
 > ***"中缀表达式转换后缀表达式" 和 "计算后缀表达式" 具有通用性， 
 > 需求变更只需更新 "字符串解析为中缀表达式"***
