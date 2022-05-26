@@ -14,8 +14,10 @@ enum character_case
 	is_negative_sign_number
 };
 
+//Store an operand or operator.
 struct data_type
 {
+	////debug  function
 	//friend std::ostream& operator<<(std::ostream& os, data_type dt);
 	data_type(double _number):
 		is_symbol(false), number(_number), symbol(0) { }
@@ -35,6 +37,7 @@ struct data_type
 //	return os;
 //}
 
+//Evaluates an infix expression as a string.
 class Calculator
 {
 public:
@@ -61,12 +64,14 @@ public:
 	}*/
 private:
 	/* core data member */
+	std::map<char, int> priority;
 	std::string string_infix;
 	std::queue<data_type> infix;
 	std::queue<data_type> postfix; 
 	double result;
 
 	/* core member function */
+	//Convert string to infix expression and simplify.
 	std::queue<data_type> simplify_infix();
 	std::queue<data_type> infix_to_postfix();
 	double postfix_parsing();
@@ -74,27 +79,38 @@ private:
 	/* infix_to_postfix() helper member */
 	bool is_higher_priority(char current, char stack_top);
 	character_case get_character_case (int index);
+	//Extract double from string.
 	double get_digit(int& i);
-	/* postfix_parsing() helper member */
+	std::map<char, int> priority_initialize();
 
+	/* postfix_parsing() helper member */
+	double two_number_operation(std::stack<double>& digit, char ops);
 };
 
 inline Calculator::Calculator(std::string _infix):
-	string_infix(_infix),infix(simplify_infix()),postfix(infix_to_postfix()),result(postfix_parsing()){ }
+	string_infix(_infix), priority(priority_initialize()),infix(simplify_infix()),postfix(infix_to_postfix()),result(postfix_parsing()){ }
 
 inline double Calculator::get_result()
 {
-	return result;
+	//In the IEEE-754 standard -0 will be printed out.
+	if(result==-0)
+		return 0.0;
+	else
+		return result;
 }
 
 inline std::queue<data_type> Calculator::simplify_infix()
 {
-	
+	//The logic is in the document.
 	std::queue<data_type> infix;
+	//e.g: 1+2 -> (1+2)
 	infix.push(data_type('('));
 	bool negative_number = false;
 	for (int i = 0; i < string_infix.size(); ++i)
 	{
+		//Ignore '='. Usually it can be deleted.
+		if (string_infix[i] == '=')
+			continue;
 		character_case nsc = get_character_case (i);
 		switch (nsc)
 		{
@@ -110,10 +126,12 @@ inline std::queue<data_type> Calculator::simplify_infix()
 			infix.push(data_type(string_infix[i]));
 			break;
 		case is_negative_sign_bracket:
+			//e.g: -(1+2)->(0-(1+2))
 			infix.push(data_type(0.0));
 			infix.push(data_type('-'));
 			break;
 		case is_negative_sign_number:
+			//e.g: 2+(-3+5)->2+((0-3)+5)
 			negative_number = true;
 			infix.push(data_type('('));
 			infix.push(data_type(0.0));
@@ -193,36 +211,14 @@ inline std::queue<data_type> Calculator::infix_to_postfix()
 
 inline double Calculator::postfix_parsing()
 {
+	//The logic is in the document.
 	std::stack<double> digit;
 	while (!postfix.empty())
 	{
 		if (!postfix.front().is_symbol)
 			digit.push(postfix.front().number);
 		else
-		{
-			double second = digit.top();
-			digit.pop();
-			double first = digit.top();
-			digit.pop();
-			switch (postfix.front().symbol)
-			{
-			case '+':
-				digit.push(first + second);
-				break;
-			case '-':
-				digit.push(first - second);
-				break;
-			case '/':
-				digit.push(first / second);
-				break;
-			case '*':
-				digit.push(first * second);
-				break;
-			default:
-				std::cout << "Error is in postfix_parsing";
-				break;
-			}
-		}
+			digit.push(two_number_operation(digit, postfix.front().symbol));
 		postfix.pop();
 	}
 	return digit.top();
@@ -230,18 +226,17 @@ inline double Calculator::postfix_parsing()
 
 inline bool Calculator::is_higher_priority(char current,char stack_top)
 {
-	std::map<char, int> priority;
-	priority['#'] = 0;
-	priority['('] = 1;
-	priority['+'] = 2;
-	priority['-'] = 2;
-	priority['*'] = 3;
-	priority['/'] = 3;
 	return priority[current] > priority[stack_top];
 }
 
 inline character_case Calculator::get_character_case (int index)
 {
+	/*
+	Negative sign determination: "(-" or "-"(iff index==0)
+	Two cases:
+	(1) is_negative_sign_bracket e.g: -(
+	(2) is_negative_sign_number e,g: -8
+	*/
 	if (isdigit(string_infix[index]))
 		return is_digit;
 	else if (string_infix[index] == '-' && (index == 0 || string_infix[index - 1] == '('))
@@ -257,6 +252,7 @@ inline character_case Calculator::get_character_case (int index)
 
 inline double Calculator::get_digit(int& i)
 {
+	//Notice:i will be changed to the first index that is not a digit or a decimal point.
 	std::string str_digit;
 	while (isdigit(string_infix[i+1])|| string_infix[i+1]=='.')
 	{
@@ -264,5 +260,46 @@ inline double Calculator::get_digit(int& i)
 		++i;
 	}
 	str_digit += string_infix[i];
+	//stod() converts string to double.
 	return std::stod(str_digit);
+}
+
+inline std::map<char, int> Calculator::priority_initialize()
+{
+	std::map<char, int> priority;
+	priority['('] = 1;
+	priority['+'] = 2;
+	priority['-'] = 2;
+	priority['*'] = 3;
+	priority['/'] = 3;
+	return priority;
+}
+
+inline double Calculator::two_number_operation(std::stack<double>& digit, char ops)
+{
+	//Take 2 operands from the stack.The second is the first operand.
+	double value=0.0;
+	double second = digit.top();
+	digit.pop();
+	double first = digit.top();
+	digit.pop();
+	switch (postfix.front().symbol)
+	{
+	case '+':
+		value = first + second;
+		break;
+	case '-':
+		value = first - second;
+		break;
+	case '/':
+		value = first / second;
+		break;
+	case '*':
+		value = first * second;
+		break;
+	default:
+		std::cout << "Error is in postfix_parsing.";
+		break;
+	}
+	return value;
 }
