@@ -31,14 +31,14 @@ struct data_type
 };
 ```
 - ##### String parsing to infix expression:
-    1. '(' push the infix expression.
+    1. '(' add infix expressions to assist in calculating postfix expressions.
     2.  Iterate over the string:
-	    - Extract operand.
-        - Extract operator.
+	    - Extract operands added to infix expressions, extract only positive numbers.
+        - Extract operators added to infix expressions.
         - ***Handling negative signs***:
-            - Identify: Think of the minus sign only appearing to the right of '(' and at the beginning of the string.
-            - Handling: "-(" -> "0-(" and "-5*2" -> "(0-5)*2".
-    3. ')' push the infix expression.
+            - Identify: Consider negative signs that only appear to the right of '(' and at the beginning of a string.
+            - Handling: Add 0 to the infix expression first, and then add '-' to the infix expression.
+    3. ')' add infix expressions, paired with '('.
 - ##### Infix expression to postfix expression:
     1.  Both postfix expressions and infix expressions are stored in queues.
     2.  Create a stack to temporarily store operators.
@@ -87,14 +87,14 @@ struct data_type
 };
 ```
 - ##### 字符串解析为中缀表达式：
-    1. '(' 加入中缀表达式。
+    1. '(' 加入中缀表达式，辅助计算后缀表达式
     2. 遍历字符串：
-        - 提取操作数。
-        - 提取操作符。
+        - 提取操作数加入中缀表达式，只提取正数。
+        - 提取操作符加入中缀表达式。
         - ***处理负号***：
             - 识别：考虑仅出现在'('右侧和字符串开头的负号。
-            - 处理："-(" -> "0-(" 和 "-5*2" -> "(0-5)*2"。
-    3. ')' 加入中缀表达式。
+            - 处理：0先加入中缀表达式，减号后加入中缀表达式。
+    3. ')' 加入中缀表达式，与 '(' 配对。
 - ##### 中缀表达式转换后缀表达式：
     1. 后缀表达式和中缀表达式都存储在队列中。
     2. 创建一个栈来临时存储操作数。

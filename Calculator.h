@@ -10,8 +10,7 @@ enum character_case
 {
 	is_digit,
 	is_operator,
-	is_negative_sign_bracket,
-	is_negative_sign_number
+	is_negative_sign
 };
 
 //Store an operand or operator.
@@ -28,7 +27,7 @@ struct data_type
 	char symbol;
 };
 
-//inline ostream& operator<<(ostream& os, data_type dt)
+//inline std::ostream& operator<<(std::ostream& os, data_type dt)
 //{
 //	if (dt.is_symbol)
 //		os << dt.symbol;
@@ -105,7 +104,6 @@ inline std::queue<data_type> Calculator::simplify_infix()
 	std::queue<data_type> infix;
 	//e.g: 1+2 -> (1+2)
 	infix.push(data_type('('));
-	bool negative_number = false;
 	for (int i = 0; i < string_infix.size(); ++i)
 	{
 		//Ignore '='. Usually it can be deleted.
@@ -116,24 +114,12 @@ inline std::queue<data_type> Calculator::simplify_infix()
 		{
 		case is_digit:
 			infix.push(data_type(get_digit(i)));
-			if (negative_number)
-			{
-				infix.push(data_type(')'));
-				negative_number = false;
-			}
 			break;
 		case is_operator:
 			infix.push(data_type(string_infix[i]));
 			break;
-		case is_negative_sign_bracket:
+		case is_negative_sign:
 			//e.g: -(1+2)->(0-(1+2))
-			infix.push(data_type(0.0));
-			infix.push(data_type('-'));
-			break;
-		case is_negative_sign_number:
-			//e.g: 2+(-3+5)->2+((0-3)+5)
-			negative_number = true;
-			infix.push(data_type('('));
 			infix.push(data_type(0.0));
 			infix.push(data_type('-'));
 			break;
@@ -231,21 +217,11 @@ inline bool Calculator::is_higher_priority(char current,char stack_top)
 
 inline character_case Calculator::get_character_case (int index)
 {
-	/*
-	Negative sign determination: "(-" or "-"(iff index==0)
-	Two cases:
-	(1) is_negative_sign_bracket e.g: -(
-	(2) is_negative_sign_number e,g: -8
-	*/
+	//Negative sign determination: "(-" or "-"(iff index==0)
 	if (isdigit(string_infix[index]))
 		return is_digit;
 	else if (string_infix[index] == '-' && (index == 0 || string_infix[index - 1] == '('))
-	{
-		if (isdigit(string_infix[index + 1]))
-			return is_negative_sign_number;
-		else
-			return is_negative_sign_bracket;
-	}
+			return is_negative_sign;
 	else
 		return is_operator;
 }
