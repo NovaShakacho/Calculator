@@ -47,7 +47,10 @@ struct data_type
         -  If it is an operator(OP), compare the priority of OP and top of stack.
           	-  If the OP's priority is higher, the OP pushes the stack.
             -  Otherwise, the operator in the stack is continuously popped into the postfix expression until the priority of op is higher than the top operator on the stack. 
-	4.  If the stack is not empty, then pop the elements into the postfix expression in turn.
+	    - Handling of parentheses:
+           - Set the left parenthesis to the lowest precedence, but add it directly to the postfix expression.
+           - If a closing parenthesis is encountered, pop the operator from the operator stack into the postfix expression until an opening parenthesis is encountered. 
+    4.  If the stack is not empty, then pop the elements into the postfix expression in turn.
 - ##### Calculation of postfix expressions:
     1.  Create a temporary stack for computation. 
     2.  Iterate over the postfix expression queue:
@@ -87,7 +90,7 @@ struct data_type
 };
 ```
 - ##### 字符串解析为中缀表达式：
-    1. '(' 加入中缀表达式，辅助计算后缀表达式
+    1. '(' 加入中缀表达式，辅助计算后缀表达式。
     2. 遍历字符串：
         - 提取操作数加入中缀表达式，只提取正数。
         - 提取操作符加入中缀表达式。
@@ -100,9 +103,12 @@ struct data_type
     2. 创建一个栈来临时存储操作数。
     3. 遍历中缀表达式的队列：
         - 如果是操作数，则添加到后缀表达式中。
-        - 如果是操作符(OP)，比较OP和栈顶操作符的优先级。
+        - 如果是操作符(OP)，比较OP和栈顶操作符的优先级:
           - 如果 OP 的优先级更高，则 OP 压栈。
           - 否则，不断弹出栈中的操作符到后缀表达式中，直到 OP 的优先级高于栈顶的操作符。
+        - 括号的处理方式:
+          - 将左括号的优先级设置为最低，但是直接添加到后缀表达式中。
+          - 如果遇到右括号，那么从操作符栈中不断弹出操作符到后缀表达式中，直到遇到左括号。
     4. 如果栈不为空，则依次将元素弹出到后缀表达式中。
 - ##### 计算后缀表达式：
     1. 创建一个临时栈用于计算。
