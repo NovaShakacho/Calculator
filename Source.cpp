@@ -5,6 +5,7 @@ using namespace std;
 //int main(void)
 //{
 //	string infix;
+// 
 //	cout << "Please input a infix expression:";
 //	getline(cin, infix);
 //	Calculator calculator(infix);
@@ -18,7 +19,7 @@ int main(void)
 	//Can't use ios::binary!
 	//The default(windows) newline character of txt file is CRLF(\r\n), but getline is \n.
 	//Non-binary mode \r\n will be automatically converted to \n by the system, while binary mode will not.
-	ifstream ifs("input.txt",ios::in);
+	ifstream ifs("input1.txt",ios::in);
 	ofstream ofs("output.txt",ios::out);
 	while (getline(ifs, infix))
 	{
@@ -26,5 +27,7 @@ int main(void)
 		ofs << infix << calculator.get_result() << "\n";
 	}
 	cout << "Accept!" << endl;
+	ifs.close();
+	ofs.close();
 	return 0;
 }
