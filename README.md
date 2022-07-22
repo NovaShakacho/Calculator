@@ -1,84 +1,22 @@
-Language: [English](#English) or [ÖĞÎÄ](#Chinese)
-===
-<span id="English">English(From google translate)</span>:
----
-### Instruction manual:
-- ##### Profile:
-    A simple calculator developed using cpp.<br>
-    The core code is located in "Calculator.h", which is used to ***calculate infix expressions in the form of strings***.<br>
-    "Source.cpp" can operate on files of the specified form, but it is not important.
-- ##### Scope of application:
-   - OK: Decimal, Negative sign, Operator "+ - * / ( )"
-   - ***NO: Positive sign***
-- ##### Development environment:
-   - Windows 11
-   - Visual Studio 2022 Community
-***
-### Implementation logic:
-> ##### Notice:
-> ***Infix expression to postfix expression" and "Calculation of postfix expressions" are generic, 
-> and the requirement changes only need to update "String parsing to infix expression"***.
-- ##### Data type description:
-   The program must use a special type that allows the data structure to store both operands and operators.
-```cpp
-struct data_type
-{
-	data_type(double _number);
-	data_type(char _char);
-	bool is_symbol;
-	double number;
-	char symbol;
-};
-```
-- ##### String parsing to infix expression:
-    1. '(' add infix expressions to assist in calculating postfix expressions.
-    2.  Iterate over the string:
-	    - Extract operands added to infix expressions, extract only positive numbers.
-        - Extract operators added to infix expressions.
-        - ***Handling negative signs***:
-            - Identify: Consider negative signs that only appear to the right of '(' and at the beginning of a string.
-            - Handling: Add 0 to the infix expression first, and then add '-' to the infix expression.
-    3. ')' add infix expressions, paired with '('.
-- ##### Infix expression to postfix expression:
-    1.  Both postfix expressions and infix expressions are stored in queues.
-    2.  Create a stack to temporarily store operators.
-    3.  Iterate over the infix expression queue:
-        -  If it is an operand, it is added to the postfix expression.
-        -  If it is an operator(OP), compare the priority of OP and top of stack.
-          	-  If the OP's priority is higher, the OP pushes the stack.
-            -  Otherwise, the operator in the stack is continuously popped into the postfix expression until the priority of op is higher than the top operator on the stack. 
-	    - Handling of parentheses:
-           - Set the left parenthesis to the lowest precedence, but add it directly to the postfix expression.
-           - If a closing parenthesis is encountered, pop the operator from the operator stack into the postfix expression until an opening parenthesis is encountered. 
-    4.  If the stack is not empty, then pop the elements into the postfix expression in turn.
-- ##### Calculation of postfix expressions:
-    1.  Create a temporary stack for computation. 
-    2.  Iterate over the postfix expression queue:
-		-  If it is an operand, push it to the stack.
-        -  Otherwise, remove the top two elements of the stack and perform the specified calculation.
-    3.  Pop the last element on the stack to get the result.
-***
 
-<span id="Chinese">ÖĞÎÄ</span>£º
----
-### ¼ò½é:
-- ##### ¸ÅÊö:
-    Ò»¸öÊ¹ÓÃcpp¿ª·¢µÄ¼òµ¥¼ÆËãÆ÷¡£<br>
-    ºËĞÄ´úÂëÎ»ÓÚ"Calculator.h"£¬ÓÃÓÚ***¼ÆËã×Ö·û´®ĞÎÊ½µÄÖĞ×º±í´ïÊ½***¡£<br>
-    "Source.h"¿ÉÒÔ¶ÔÖ¸¶¨¸ñÊ½µÄÎÄ¼ş½øĞĞ²Ù×÷£¬µ«ÊÇÕâ²»ÖØÒª¡£
-- ##### ÊÊÓÃ·¶Î§:
-   - ¿ÉĞĞ£ºĞ¡Êı, ¸ººÅ, ²Ù×÷·û"+ - * / ( )"
-   - ²»¿ÉĞĞ£º***ÕıºÅ***
-- ##### ¿ª·¢»·¾³£º
+### ç®€ä»‹:
+- ##### æ¦‚è¿°:
+    ä¸€ä¸ªä½¿ç”¨cppå¼€å‘çš„ç®€å•è®¡ç®—å™¨ã€‚<br>
+    æ ¸å¿ƒä»£ç ä½äº"Calculator.h"ï¼Œç”¨äº***è®¡ç®—å­—ç¬¦ä¸²å½¢å¼çš„ä¸­ç¼€è¡¨è¾¾å¼***ã€‚<br>
+    "Source.h"å¯ä»¥å¯¹æŒ‡å®šæ ¼å¼çš„æ–‡ä»¶è¿›è¡Œæ“ä½œï¼Œä½†æ˜¯è¿™ä¸é‡è¦ã€‚
+- ##### é€‚ç”¨èŒƒå›´:
+   - å¯è¡Œï¼šå°æ•°, è´Ÿå·, æ“ä½œç¬¦"+ - * / ( )"
+   - ä¸å¯è¡Œï¼š***æ­£å·***
+- ##### å¼€å‘ç¯å¢ƒï¼š
   - Windows 11
   - Visual Studio 2022 Community
 ***
-### ÊµÏÖÂß¼­:
-> ##### ×¢Òâ:
-> ***"ÖĞ×º±í´ïÊ½×ª»»ºó×º±í´ïÊ½" ºÍ "¼ÆËãºó×º±í´ïÊ½" ¾ßÓĞÍ¨ÓÃĞÔ£¬ 
-> ĞèÇó±ä¸üÖ»Ğè¸üĞÂ "×Ö·û´®½âÎöÎªÖĞ×º±í´ïÊ½"***
-- ##### Êı¾İÀàĞÍÃèÊö:
-  ³ÌĞò±ØĞëÊ¹ÓÃÒ»ÖÖÊı¾İ½á¹¹À´´æ´¢²Ù×÷ÊıºÍ²Ù×÷·û¡£
+### å®ç°é€»è¾‘:
+> ##### æ³¨æ„:
+> ***"ä¸­ç¼€è¡¨è¾¾å¼è½¬æ¢åç¼€è¡¨è¾¾å¼" å’Œ "è®¡ç®—åç¼€è¡¨è¾¾å¼" å…·æœ‰é€šç”¨æ€§ï¼Œ 
+> éœ€æ±‚å˜æ›´åªéœ€æ›´æ–° "å­—ç¬¦ä¸²è§£æä¸ºä¸­ç¼€è¡¨è¾¾å¼"***
+- ##### æ•°æ®ç±»å‹æè¿°:
+  ç¨‹åºå¿…é¡»ä½¿ç”¨ä¸€ç§æ•°æ®ç»“æ„æ¥å­˜å‚¨æ“ä½œæ•°å’Œæ“ä½œç¬¦ã€‚
 ```cpp
 struct data_type
 {
@@ -89,35 +27,35 @@ struct data_type
 	char symbol;
 };
 ```
-- ##### ×Ö·û´®½âÎöÎªÖĞ×º±í´ïÊ½£º
-    1. '(' ¼ÓÈëÖĞ×º±í´ïÊ½£¬¸¨Öú¼ÆËãºó×º±í´ïÊ½¡£
-    2. ±éÀú×Ö·û´®£º
-        - ÌáÈ¡²Ù×÷Êı¼ÓÈëÖĞ×º±í´ïÊ½£¬Ö»ÌáÈ¡ÕıÊı¡£
-        - ÌáÈ¡²Ù×÷·û¼ÓÈëÖĞ×º±í´ïÊ½¡£
-        - ***´¦Àí¸ººÅ***£º
-            - Ê¶±ğ£º¿¼ÂÇ½ö³öÏÖÔÚ'('ÓÒ²àºÍ×Ö·û´®¿ªÍ·µÄ¸ººÅ¡£
-            - ´¦Àí£º0ÏÈ¼ÓÈëÖĞ×º±í´ïÊ½£¬¼õºÅºó¼ÓÈëÖĞ×º±í´ïÊ½¡£
-    3. ')' ¼ÓÈëÖĞ×º±í´ïÊ½£¬Óë '(' Åä¶Ô¡£
-- ##### ÖĞ×º±í´ïÊ½×ª»»ºó×º±í´ïÊ½£º
-    1. ºó×º±í´ïÊ½ºÍÖĞ×º±í´ïÊ½¶¼´æ´¢ÔÚ¶ÓÁĞÖĞ¡£
-    2. ´´½¨Ò»¸öÕ»À´ÁÙÊ±´æ´¢²Ù×÷Êı¡£
-    3. ±éÀúÖĞ×º±í´ïÊ½µÄ¶ÓÁĞ£º
-        - Èç¹ûÊÇ²Ù×÷Êı£¬ÔòÌí¼Óµ½ºó×º±í´ïÊ½ÖĞ¡£
-        - Èç¹ûÊÇ²Ù×÷·û(OP)£¬±È½ÏOPºÍÕ»¶¥²Ù×÷·ûµÄÓÅÏÈ¼¶:
-          - Èç¹û OP µÄÓÅÏÈ¼¶¸ü¸ß£¬Ôò OP Ñ¹Õ»¡£
-          - ·ñÔò£¬²»¶Ïµ¯³öÕ»ÖĞµÄ²Ù×÷·ûµ½ºó×º±í´ïÊ½ÖĞ£¬Ö±µ½ OP µÄÓÅÏÈ¼¶¸ßÓÚÕ»¶¥µÄ²Ù×÷·û¡£
-        - À¨ºÅµÄ´¦Àí·½Ê½:
-          - ½«×óÀ¨ºÅµÄÓÅÏÈ¼¶ÉèÖÃÎª×îµÍ£¬µ«ÊÇÖ±½ÓÌí¼Óµ½ºó×º±í´ïÊ½ÖĞ¡£
-          - Èç¹ûÓöµ½ÓÒÀ¨ºÅ£¬ÄÇÃ´´Ó²Ù×÷·ûÕ»ÖĞ²»¶Ïµ¯³ö²Ù×÷·ûµ½ºó×º±í´ïÊ½ÖĞ£¬Ö±µ½Óöµ½×óÀ¨ºÅ¡£
-    4. Èç¹ûÕ»²»Îª¿Õ£¬ÔòÒÀ´Î½«ÔªËØµ¯³öµ½ºó×º±í´ïÊ½ÖĞ¡£
-- ##### ¼ÆËãºó×º±í´ïÊ½£º
-    1. ´´½¨Ò»¸öÁÙÊ±Õ»ÓÃÓÚ¼ÆËã¡£
-    2. ±éÀúºó×º±í´ïÊ½¶ÓÁĞ£º
-        - Èç¹ûÊÇ²Ù×÷Êı£¬Ôò½«ÆäÑ¹ÈëÕ»¡£
-        - ·ñÔò£¬É¾³ıÕ»µÄ¶¥²¿Á½¸öÔªËØ²¢Ö´ĞĞÖ¸¶¨µÄ¼ÆËã¡£
-    3. µ¯³öÕ»ÖĞ×îºóÒ»¸öÔªËØµÃµ½½á¹û¡£
+- ##### å­—ç¬¦ä¸²è§£æä¸ºä¸­ç¼€è¡¨è¾¾å¼ï¼š
+    1. '(' åŠ å…¥ä¸­ç¼€è¡¨è¾¾å¼ï¼Œè¾…åŠ©è®¡ç®—åç¼€è¡¨è¾¾å¼ã€‚
+    2. éå†å­—ç¬¦ä¸²ï¼š
+        - æå–æ“ä½œæ•°åŠ å…¥ä¸­ç¼€è¡¨è¾¾å¼ï¼Œåªæå–æ­£æ•°ã€‚
+        - æå–æ“ä½œç¬¦åŠ å…¥ä¸­ç¼€è¡¨è¾¾å¼ã€‚
+        - ***å¤„ç†è´Ÿå·***ï¼š
+            - è¯†åˆ«ï¼šè€ƒè™‘ä»…å‡ºç°åœ¨'('å³ä¾§å’Œå­—ç¬¦ä¸²å¼€å¤´çš„è´Ÿå·ã€‚
+            - å¤„ç†ï¼š0å…ˆåŠ å…¥ä¸­ç¼€è¡¨è¾¾å¼ï¼Œå‡å·ååŠ å…¥ä¸­ç¼€è¡¨è¾¾å¼ã€‚
+    3. ')' åŠ å…¥ä¸­ç¼€è¡¨è¾¾å¼ï¼Œä¸ '(' é…å¯¹ã€‚
+- ##### ä¸­ç¼€è¡¨è¾¾å¼è½¬æ¢åç¼€è¡¨è¾¾å¼ï¼š
+    1. åç¼€è¡¨è¾¾å¼å’Œä¸­ç¼€è¡¨è¾¾å¼éƒ½å­˜å‚¨åœ¨é˜Ÿåˆ—ä¸­ã€‚
+    2. åˆ›å»ºä¸€ä¸ªæ ˆæ¥ä¸´æ—¶å­˜å‚¨æ“ä½œæ•°ã€‚
+    3. éå†ä¸­ç¼€è¡¨è¾¾å¼çš„é˜Ÿåˆ—ï¼š
+        - å¦‚æœæ˜¯æ“ä½œæ•°ï¼Œåˆ™æ·»åŠ åˆ°åç¼€è¡¨è¾¾å¼ä¸­ã€‚
+        - å¦‚æœæ˜¯æ“ä½œç¬¦(OP)ï¼Œæ¯”è¾ƒOPå’Œæ ˆé¡¶æ“ä½œç¬¦çš„ä¼˜å…ˆçº§:
+          - å¦‚æœ OP çš„ä¼˜å…ˆçº§æ›´é«˜ï¼Œåˆ™ OP å‹æ ˆã€‚
+          - å¦åˆ™ï¼Œä¸æ–­å¼¹å‡ºæ ˆä¸­çš„æ“ä½œç¬¦åˆ°åç¼€è¡¨è¾¾å¼ä¸­ï¼Œç›´åˆ° OP çš„ä¼˜å…ˆçº§é«˜äºæ ˆé¡¶çš„æ“ä½œç¬¦ã€‚
+        - æ‹¬å·çš„å¤„ç†æ–¹å¼:
+          - å°†å·¦æ‹¬å·çš„ä¼˜å…ˆçº§è®¾ç½®ä¸ºæœ€ä½ï¼Œä½†æ˜¯ç›´æ¥æ·»åŠ åˆ°åç¼€è¡¨è¾¾å¼ä¸­ã€‚
+          - å¦‚æœé‡åˆ°å³æ‹¬å·ï¼Œé‚£ä¹ˆä»æ“ä½œç¬¦æ ˆä¸­ä¸æ–­å¼¹å‡ºæ“ä½œç¬¦åˆ°åç¼€è¡¨è¾¾å¼ä¸­ï¼Œç›´åˆ°é‡åˆ°å·¦æ‹¬å·ã€‚
+    4. å¦‚æœæ ˆä¸ä¸ºç©ºï¼Œåˆ™ä¾æ¬¡å°†å…ƒç´ å¼¹å‡ºåˆ°åç¼€è¡¨è¾¾å¼ä¸­ã€‚
+- ##### è®¡ç®—åç¼€è¡¨è¾¾å¼ï¼š
+    1. åˆ›å»ºä¸€ä¸ªä¸´æ—¶æ ˆç”¨äºè®¡ç®—ã€‚
+    2. éå†åç¼€è¡¨è¾¾å¼é˜Ÿåˆ—ï¼š
+        - å¦‚æœæ˜¯æ“ä½œæ•°ï¼Œåˆ™å°†å…¶å‹å…¥æ ˆã€‚
+        - å¦åˆ™ï¼Œåˆ é™¤æ ˆçš„é¡¶éƒ¨ä¸¤ä¸ªå…ƒç´ å¹¶æ‰§è¡ŒæŒ‡å®šçš„è®¡ç®—ã€‚
+    3. å¼¹å‡ºæ ˆä¸­æœ€åä¸€ä¸ªå…ƒç´ å¾—åˆ°ç»“æœã€‚
 ***
 
-### ²Î¿¼:
-- ##### [PTA-7-20 ±í´ïÊ½×ª»»£¨ÖĞ×º×ªºó×º£¬´øÀ¨ºÅ£¬¸ºÊı£¬Ğ¡Êı×ª»»£©](https://blog.csdn.net/weixin_41012699/article/details/105279523)
-- ##### [C++ÊµÏÖ¼ÆËãÆ÷£¬ÔËÓÃÕ»£¬Êä³öºó×º±í´ïÊ½£¬ÓĞ¸ºÊı¡¢Ğ¡Êı´¦Àí](https://www.whcsrl.com/blog/1029875)
+### å‚è€ƒ:
+- ##### [PTA-7-20 è¡¨è¾¾å¼è½¬æ¢ï¼ˆä¸­ç¼€è½¬åç¼€ï¼Œå¸¦æ‹¬å·ï¼Œè´Ÿæ•°ï¼Œå°æ•°è½¬æ¢ï¼‰](https://blog.csdn.net/weixin_41012699/article/details/105279523)
+- ##### [C++å®ç°è®¡ç®—å™¨ï¼Œè¿ç”¨æ ˆï¼Œè¾“å‡ºåç¼€è¡¨è¾¾å¼ï¼Œæœ‰è´Ÿæ•°ã€å°æ•°å¤„ç†](https://www.whcsrl.com/blog/1029875)
